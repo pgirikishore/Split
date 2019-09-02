@@ -45,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
                 if( mFirebaseUser != null)
                 {
                     //Toast.makeText(MainActivity.this,"Login Successful",Toast.LENGTH_LONG).show();
+                    Intent intohome = new Intent(MainActivity.this, Home.class);
+                    startActivity(intohome);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String uid= user.getEmail();
+                    Toast.makeText(MainActivity.this,uid,Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -82,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else
                             {
-                               // Intent intohome = new Intent(MainActivity.this, Home.class);
-                                //startActivity(intohome);
+                               Intent home = new Intent(MainActivity.this, Home.class);
+                               startActivity(home);
+                               //Toast.makeText(MainActivity.this,"Login Errorhi!",Toast.LENGTH_LONG).show();
                             }
                         }
                     });

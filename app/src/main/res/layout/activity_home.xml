@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#252A37"
+    android:backgroundTint="#252A37"
+    tools:context=".Home">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:backgroundTint="#252A37"
+            app:popupTheme="@style/PopupOverlay"
+            app:subtitleTextColor="@color/common_google_signin_btn_text_dark_default"
+            app:titleTextColor="@color/common_google_signin_btn_text_dark_default" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/content_home" />
+
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/floatingActionMenu"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:menu_openDirection="up"
+        app:menu_labels_showShadow="true">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/newgroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_label="New Group"
+            app:menu_labels_showShadow="true"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/joingroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_label="Join Group"
+            app:menu_labels_showShadow="true"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+    </com.github.clans.fab.FloatingActionMenu>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
