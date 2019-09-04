@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:backgroundTint="#252A37"
             app:popupTheme="@style/PopupOverlay"
@@ -44,7 +44,8 @@
             android:layout_height="wrap_content"
             app:fab_label="New Group"
             app:menu_labels_showShadow="true"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@android:drawable/ic_input_add"
+            android:foregroundGravity="bottom"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/joingroup"
@@ -53,6 +54,15 @@
             app:fab_label="Join Group"
             app:menu_labels_showShadow="true"
             app:srcCompat="@android:drawable/ic_input_add" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/dining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_label="Dining"
+            app:menu_labels_showShadow="true"
+            app:srcCompat="@drawable/googleg_standard_color_18"
+            tools:ignore="DuplicateIds" />
 
     </com.github.clans.fab.FloatingActionMenu>
 
