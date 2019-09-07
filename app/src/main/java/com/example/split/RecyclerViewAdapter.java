@@ -1,6 +1,7 @@
 package com.example.split;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext, mImageName.get(position),Toast.LENGTH_SHORT).show();
+                Intent group= new Intent(mContext,Group.class);
+                group.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                group.putExtra("Name", mImageName.get(position));
+                mContext.startActivity(group);
+
+
+
             }
         });
     }

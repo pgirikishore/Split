@@ -11,10 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".Dining"
+            android:screenOrientation="landscape"></activity>
+        <activity android:name=".Group" />
         <activity
             android:name=".Home"
             android:label="@string/title_activity_home"
-           android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Register" />
         <activity android:name=".MainActivity">
             <intent-filter>

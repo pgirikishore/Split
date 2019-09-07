@@ -30,7 +30,7 @@ public class Dining extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_dining);
+        setContentView(R.layout.activity_dining );
 
         for(int i=1;i<=16;i++)
         {

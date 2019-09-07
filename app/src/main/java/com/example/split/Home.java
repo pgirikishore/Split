@@ -4,9 +4,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ThrowOnExtraProperties;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,7 +32,10 @@ public class Home extends AppCompatActivity {
     private static final String TAG = "Home";
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    Button newgroup;
+    FloatingActionButton newwgroup;
+    FloatingActionMenu floatingActionMenu;
+    Toolbar mToolbar;
+    int backButtonCount=0;
 
     //var
     private ArrayList<String> mNames= new ArrayList<>();
@@ -40,8 +49,25 @@ public class Home extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: ");
         initImageBitmaps();
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = current_user.getUid();
 
 
+
+        mToolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Welcome");
+
+       /* floatingActionMenu= (FloatingActionMenu)findViewById(R.id.floatingActionMenu);
+        newwgroup= (FloatingActionButton)findViewById(R.id.newgroup);
+        newwgroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(Home.this,"New Group", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+*/
     }
 
     @Override
@@ -72,13 +98,13 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Group 1");
+        mNames.add("Roommates");
 
         mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Group 2");
+        mNames.add("Office");
 
         mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mNames.add("Group 3");
+        mNames.add("Friends");
 
         /*mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
         mNames.add("Rocky Mountain National Park");
@@ -111,4 +137,31 @@ public class Home extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    public void newgroups(View v)
+    {
+        Toast.makeText(Home.this,"New Group",Toast.LENGTH_SHORT).show();
+    }
+
+    public void dining(View v)
+    {
+        Intent din = new Intent(getApplicationContext(),Dining.class);
+        startActivity(din);
+        //Toast.makeText(Home.this,"Dining",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(backButtonCount >= 1)
+        {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+        else
+        {
+            Toast.makeText(this, "Press the back button once again to close the application.", Toast.LENGTH_SHORT).show();
+            backButtonCount++;
+        }
+    }
 }

@@ -42,26 +42,32 @@
             android:id="@+id/newgroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:onClick="newgroups"
+            android:src="@drawable/ic_group_add_black_24dp"
             app:fab_label="New Group"
-            app:menu_labels_showShadow="true"
-            app:srcCompat="@android:drawable/ic_input_add"
-            android:foregroundGravity="bottom"/>
+            app:menu_labels_showShadow="true" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/joingroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_group_black_24dp"
             app:fab_label="Join Group"
+            app:fab_showShadow="true"
             app:menu_labels_showShadow="true"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:srcCompat="@drawable/ic_group_black_24dp" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/dining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:onClick="dining"
+            android:src="@drawable/ic_local_dining_black_24dp"
             app:fab_label="Dining"
             app:menu_labels_showShadow="true"
-            app:srcCompat="@drawable/googleg_standard_color_18"
             tools:ignore="DuplicateIds" />
 
     </com.github.clans.fab.FloatingActionMenu>

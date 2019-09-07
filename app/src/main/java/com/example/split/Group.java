@@ -26,7 +26,7 @@ public class Group extends AppCompatActivity {
         getSupportActionBar().setTitle(name);
 
 
-        
+
 
         myViewPager=(ViewPager)findViewById(R.id.main_tabs_pager);
         myTabsAccessorAdapter =new TabsAccessorAdapter(getSupportFragmentManager());
