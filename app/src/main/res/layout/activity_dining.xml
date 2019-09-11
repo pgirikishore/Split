@@ -403,4 +403,18 @@
         android:text="Total Amount : ₹0.00"
         android:textColor="#FFFF"
         android:textSize="30sp" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="292dp"
+        android:layout_marginBottom="144dp"
+        android:text="Shared A Dish?"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:layout_below="@+id/textView17"/>
 </RelativeLayout>

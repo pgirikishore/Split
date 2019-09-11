@@ -17,5 +17,11 @@
 
     <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:colorAccent">@color/theme</item>
+        <item name="android:color">@color/theme</item>
+        <item name="colorAccent">@color/theme</item>
+    </style>
+
 
 </resources>

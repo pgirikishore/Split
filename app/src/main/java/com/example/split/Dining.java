@@ -11,19 +11,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Dining extends AppCompatActivity {
+public class Dining extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     ImageView imageView,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7,imageView8,imageView9,imageView10,imageView11,imageView12,imageView13,imageView14,imageView15,imageView16;
     TextView textView,textView2,textView3,textView4,textView5,textView6,textView7,textView8,textView9,textView10,textView11,textView12,textView13,textView14,textView15,textView16,textView17;
-    int n;
-    double amt;
+    Switch switch1;
+    int n,share,count=0;
+    double amt,samt;
     double amount[]=new double[17];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class Dining extends AppCompatActivity {
         {
             amount[i]=0;
         }
+        switch1=(Switch)findViewById(R.id.switch1);
+        switch1.setOnCheckedChangeListener(this);
 
         imageView=(ImageView)findViewById(R.id.imageView);
         imageView2=(ImageView)findViewById(R.id.imageView2);
@@ -105,21 +110,23 @@ public class Dining extends AppCompatActivity {
         textView14.setVisibility(View.INVISIBLE);
         textView15.setVisibility(View.INVISIBLE);
         textView16.setVisibility(View.INVISIBLE);
+        textView17.setVisibility(View.INVISIBLE);
 
         final NumberPicker numberPicker = new NumberPicker(this);
         numberPicker.setMaxValue(10);
         numberPicker.setMinValue(3);
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         builder.setView(numberPicker);
-        builder.setTitle("How Many?");
+        builder.setTitle("How Many People?");
         builder.setMessage("Choose a value :");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                textView17.setVisibility(View.VISIBLE);
                 n=numberPicker.getValue();
                 Toast.makeText(Dining.this, ""+n,Toast.LENGTH_SHORT).show();
                 if(n==3)
@@ -278,6 +285,20 @@ public class Dining extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+
+                    amount[1] += samt/share;
+                    textView.setText("₹"+round(amount[1],2));
+                    total();
+
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -296,7 +317,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[1] += amt;
                         textView.setText("₹"+round(amount[1],2));
                         total();
@@ -310,6 +331,18 @@ public class Dining extends AppCompatActivity {
         imageView2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[2] += samt/share;
+                    textView2.setText("₹"+round(amount[2],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -326,7 +359,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input2.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[2] += amt;
                         textView2.setText("₹"+round(amount[2],2));
                         total();
@@ -340,6 +373,19 @@ public class Dining extends AppCompatActivity {
         imageView3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+
+                    amount[3] += samt/share;
+                    textView3.setText("₹"+round(amount[3],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -356,7 +402,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[3] += amt;
                         textView3.setText("₹"+round(amount[3],2));
                         total();
@@ -370,6 +416,19 @@ public class Dining extends AppCompatActivity {
         imageView4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[4] += samt/share;
+                    textView4.setText("₹"+round(amount[4],2));
+                    total();
+
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -386,7 +445,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[4] += amt;
                         textView4.setText("₹"+round(amount[4],2));
                         total();
@@ -400,6 +459,18 @@ public class Dining extends AppCompatActivity {
         imageView5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[5] += samt/share;
+                    textView5.setText("₹"+round(amount[5],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -416,7 +487,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[5] += amt;
                         textView5.setText("₹"+round(amount[5],2));
                         total();
@@ -430,6 +501,18 @@ public class Dining extends AppCompatActivity {
         imageView6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[6] += samt/share;
+                    textView6.setText("₹"+round(amount[6],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -446,7 +529,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[6] += amt;
                         textView6.setText("₹"+round(amount[6],2));
                         total();
@@ -460,6 +543,18 @@ public class Dining extends AppCompatActivity {
         imageView7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[7] += samt/share;
+                    textView7.setText("₹"+round(amount[7],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -476,7 +571,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[7] += amt;
                         textView7.setText("₹"+round(amount[7],2));
                         total();
@@ -490,6 +585,18 @@ public class Dining extends AppCompatActivity {
         imageView8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[8] += samt/share;
+                    textView8.setText("₹"+round(amount[8],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -506,7 +613,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[8] += amt;
                         textView8.setText("₹"+round(amount[8],2));
                         total();
@@ -520,6 +627,18 @@ public class Dining extends AppCompatActivity {
         imageView9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[9] += samt/share;
+                    textView9.setText("₹"+round(amount[9],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -536,7 +655,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[9] += amt;
                         textView9.setText("₹"+round(amount[9],2));
                         total();
@@ -550,6 +669,18 @@ public class Dining extends AppCompatActivity {
         imageView10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[10] += samt/share;
+                    textView10.setText("₹"+round(amount[10],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -566,7 +697,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[10] += amt;
                         textView10.setText("₹"+round(amount[10],2));
                         total();
@@ -579,6 +710,18 @@ public class Dining extends AppCompatActivity {
         imageView11.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[11] += samt/share;
+                    textView11.setText("₹"+round(amount[11],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -595,7 +738,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[11] += amt;
                         textView11.setText("₹"+round(amount[11],2));
                         total();
@@ -609,6 +752,18 @@ public class Dining extends AppCompatActivity {
         imageView12.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[12] += samt/share;
+                    textView12.setText("₹"+round(amount[12],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -625,7 +780,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[12] += amt;
                         textView12.setText("₹"+round(amount[12],2));
                         total();
@@ -638,6 +793,18 @@ public class Dining extends AppCompatActivity {
         imageView13.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[13] += samt/share;
+                    textView13.setText("₹"+round(amount[13],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -654,7 +821,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[13] += amt;
                         textView13.setText("₹"+round(amount[13],2));
                         total();
@@ -668,6 +835,18 @@ public class Dining extends AppCompatActivity {
         imageView14.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[14] += samt/share;
+                    textView14.setText("₹"+round(amount[14],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -684,7 +863,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[14] += amt;
                         textView14.setText("₹"+round(amount[14],2));
                         total();
@@ -697,6 +876,18 @@ public class Dining extends AppCompatActivity {
         imageView15.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[15] += samt/share;
+                    textView15.setText("₹"+round(amount[15],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -713,7 +904,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[15] += amt;
 
                         textView15.setText("₹"+round(amount[15],2));
@@ -728,6 +919,18 @@ public class Dining extends AppCompatActivity {
         imageView16.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count++;
+                if(switch1.isChecked())
+                {
+                    if(count==share)
+                    {
+                        switch1.setChecked(false);
+                    }
+                    amount[16] += samt/share;
+                    textView16.setText("₹"+round(amount[16],2));
+                    total();
+                    return;
+                }
                 AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
                 image.setTitle("Add a dish");
                 image.setMessage("Enter the amount");
@@ -744,7 +947,7 @@ public class Dining extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         amt=Double.parseDouble(input.getText().toString());
-                        amt =(amt+2*(0.09*amt));
+                        //amt =(amt+2*(0.09*amt));
                         amount[16] += amt;
                         textView16.setText("₹"+round(amount[16],2));
                         total();
@@ -754,6 +957,79 @@ public class Dining extends AppCompatActivity {
             }
 
         });
+
+        textView17.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder submit= new AlertDialog.Builder(Dining.this);
+                submit.setTitle("GST");
+                submit.setMessage("Enter GST percentage");
+
+                final EditText input = new EditText(Dining.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                input.setLayoutParams(lp);
+                submit.setView(input);
+
+                submit.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        double gst=Double.parseDouble(input.getText().toString());
+                        for(int i=1;i<=16;i++)
+                        {
+                            amount[i] +=((gst/100)*amount[i]);
+                        }
+                        setAmount();
+                        total();
+                    }
+                });
+                submit.show();
+
+            }
+        });
+    }
+
+    public void setAmount()
+    {
+        textView.setText("₹"+round(amount[1],2));
+        textView2.setText("₹"+round(amount[2],2));
+        textView3.setText("₹"+round(amount[3],2));
+        textView4.setText("₹"+round(amount[4],2));
+        textView5.setText("₹"+round(amount[5],2));
+        textView6.setText("₹"+round(amount[6],2));
+        textView7.setText("₹"+round(amount[7],2));
+        textView8.setText("₹"+round(amount[8],2));
+        textView9.setText("₹"+round(amount[9],2));
+        textView10.setText("₹"+round(amount[10],2));
+        textView11.setText("₹"+round(amount[11],2));
+        textView12.setText("₹"+round(amount[12],2));
+        textView13.setText("₹"+round(amount[13],2));
+        textView14.setText("₹"+round(amount[14],2));
+        textView15.setText("₹"+round(amount[15],2));
+        textView16.setText("₹"+round(amount[16],2));
+
+        imageView.setClickable(false);
+        imageView2.setClickable(false);
+        imageView3.setClickable(false);
+        imageView4.setClickable(false);
+        imageView5.setClickable(false);
+        imageView6.setClickable(false);
+        imageView7.setClickable(false);
+        imageView8.setClickable(false);
+        imageView9.setClickable(false);
+        imageView10.setClickable(false);
+        imageView11.setClickable(false);
+        imageView12.setClickable(false);
+        imageView13.setClickable(false);
+        imageView14.setClickable(false);
+        imageView15.setClickable(false);
+        imageView16.setClickable(false);
+        textView17.setClickable(false);
+
+
+
     }
 
     public void total()
@@ -774,6 +1050,61 @@ public class Dining extends AppCompatActivity {
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        if(switch1.isChecked())
+        {
+            count=0;
+            AlertDialog.Builder image=new AlertDialog.Builder(Dining.this);
+            image.setTitle("Add a dish");
+            image.setMessage("Enter the amount");
+
+            final EditText input = new EditText(Dining.this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            input.setLayoutParams(lp);
+            image.setView(input);
+
+            image.setPositiveButton("SHARE", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    samt=Double.parseDouble(input.getText().toString());
+                    final NumberPicker numberPicker = new NumberPicker(Dining.this);
+                    numberPicker.setMaxValue(n);
+                    numberPicker.setMinValue(2);
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Dining.this,R.style.AlertDialogStyle);
+                    builder.setView(numberPicker);
+                    builder.setTitle("Among How Many?");
+                    builder.setMessage("Choose a value :");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            share= numberPicker.getValue();
+
+                        }
+                    });
+                    builder.show();
+                }
+            });
+            image.show();
+        }
+        else
+        {
+            count=0;
+            //Toast.makeText(this,"bye",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
 
