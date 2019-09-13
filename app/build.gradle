@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.split"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -50,5 +50,8 @@ dependencies {
 
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'com.google.firebase:firebase-database:19.0.0'
+
+    //croppping
+    api 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
 }
 apply plugin: 'com.google.gms.google-services'

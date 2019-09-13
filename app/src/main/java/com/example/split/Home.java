@@ -2,6 +2,8 @@ package com.example.split;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -16,6 +18,7 @@ import com.google.firebase.database.ThrowOnExtraProperties;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +39,7 @@ public class Home extends AppCompatActivity {
     FloatingActionMenu floatingActionMenu;
     Toolbar mToolbar;
     int backButtonCount=0;
+    RecyclerView recyclerView;
 
     //var
     private ArrayList<String> mNames= new ArrayList<>();
@@ -44,6 +48,7 @@ public class Home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        recyclerView=(RecyclerView)findViewById(R.id.recyclerv_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -52,11 +57,14 @@ public class Home extends AppCompatActivity {
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = current_user.getUid();
 
-
-
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Welcome");
+        mToolbar.getOverflowIcon().setColorFilter(Color.WHITE , PorterDuff.Mode.SRC_ATOP);
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),
+                DividerItemDecoration.VERTICAL));
+
 
        /* floatingActionMenu= (FloatingActionMenu)findViewById(R.id.floatingActionMenu);
         newwgroup= (FloatingActionButton)findViewById(R.id.newgroup);
@@ -139,7 +147,9 @@ public class Home extends AppCompatActivity {
 
     public void newgroups(View v)
     {
-        Toast.makeText(Home.this,"New Group",Toast.LENGTH_SHORT).show();
+        Intent newGroup=new Intent(getApplicationContext(),NewAccount.class);
+        startActivity(newGroup);
+        //Toast.makeText(Home.this,"New Group",Toast.LENGTH_SHORT).show();
     }
 
     public void dining(View v)

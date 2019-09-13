@@ -1,17 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E8E8E8"
+    android:backgroundTint="#E8E8E8"
     tools:context=".OverviewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recylerv_view1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/settleup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recylerv_view1"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:background="@color/theme"
+                android:text="SETTLE UP"
+                android:textColor="@color/yellow" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/settleup"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:background="@color/theme"
+                android:text="INVITE"
+                android:textColor="@color/yellow" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/group1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Overview Fragment"
-        android:layout_centerInParent="true"
-        android:textSize="26sp"
-        android:textStyle="bold"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="24dp"
+        app:menu_colorNormal="@color/yellow"
+        app:menu_colorRipple="@color/yellow"
+        app:menu_colorPressed="@color/yellow">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attach_money_black_24dp"
+            app:fab_label="New Expense"
+            app:menu_labels_showShadow="true"
+            tools:ignore="DuplicateIds"
+            app:fab_colorNormal="@color/yellow"
+            app:fab_colorPressed="@color/yellow" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/payment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_payment_black_24dp"
+            app:fab_label="New Payment"
+            app:menu_labels_showShadow="true"
+            tools:ignore="DuplicateIds"
+            app:fab_colorNormal="@color/yellow"
+            app:fab_colorPressed="@color/yellow"/>
+    </com.github.clans.fab.FloatingActionMenu>
 
 </RelativeLayout>

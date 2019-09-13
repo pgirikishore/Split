@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="15dp"
-    android:id="@+id/parent_layout">
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
+    android:gravity="bottom|top"
+    android:hapticFeedbackEnabled="true"
+    android:padding="15dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:id="@+id/image"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/image_name"
@@ -17,7 +23,8 @@
         android:layout_marginLeft="30dp"
         android:layout_toRightOf="@id/image"
         android:text="Canada"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="17sp" />
+
 
 </RelativeLayout>

@@ -77,6 +77,8 @@ public class Dining extends AppCompatActivity implements CompoundButton.OnChecke
         textView16=(TextView)findViewById(R.id.textView16);
         textView17=(TextView)findViewById(R.id.textView17);
 
+        switch1.setVisibility(View.INVISIBLE);
+
         imageView.setVisibility(View.INVISIBLE);
         imageView2.setVisibility(View.INVISIBLE);
         imageView3.setVisibility(View.INVISIBLE);
@@ -126,6 +128,7 @@ public class Dining extends AppCompatActivity implements CompoundButton.OnChecke
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                switch1.setVisibility(View.VISIBLE);
                 textView17.setVisibility(View.VISIBLE);
                 n=numberPicker.getValue();
                 Toast.makeText(Dining.this, ""+n,Toast.LENGTH_SHORT).show();
@@ -1027,9 +1030,7 @@ public class Dining extends AppCompatActivity implements CompoundButton.OnChecke
         imageView15.setClickable(false);
         imageView16.setClickable(false);
         textView17.setClickable(false);
-
-
-
+        switch1.setClickable(false);
     }
 
     public void total()
@@ -1100,11 +1101,6 @@ public class Dining extends AppCompatActivity implements CompoundButton.OnChecke
             count=0;
             //Toast.makeText(this,"bye",Toast.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }
 
