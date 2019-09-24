@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E8E8E8"
-    android:backgroundTint="#E8E8E8"
+    android:background="@color/theme"
+    android:backgroundTint="@color/theme"
     android:orientation="vertical"
     tools:context=".NewAccount">
 
@@ -17,48 +17,56 @@
         app:layout_constraintTop_toTopOf="parent"></include>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:id="@+id/card1"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:id="@+id/card1">
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="20dp">
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/theme"
+            android:orientation="vertical">
 
 
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_below="@+id/appid"
-               android:text="Create New Group"
-               android:textColor="@color/yellow"
-               android:textSize="28sp"
-               android:layout_centerHorizontal="true"
-               android:background="#FFFFFF" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appid"
+                android:layout_centerHorizontal="true"
+                android:background="@color/theme"
+                android:text="Create New Group"
+                android:textColor="@color/yellow"
+                android:textSize="28sp" />
 
-           <de.hdodenhof.circleimageview.CircleImageView
-               android:id="@+id/groupimage"
-               android:layout_width="150dp"
-               android:layout_height="150dp"
-               android:layout_gravity="center_horizontal"
-               android:layout_marginTop="30dp"
-               android:src="@drawable/profile1" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/groupimage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/profile1" />
 
-           <com.google.android.material.textfield.TextInputLayout
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:theme="@style/AppTheme"
-               android:layout_marginTop="20dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/gname"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/yellow"
+                android:theme="@style/AppTheme">
 
-               <com.google.android.material.textfield.TextInputEditText
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent"
-                   android:hint="Group Name"/>
-           </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme"
+                    android:hint="Group Name"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-       </LinearLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -67,12 +75,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/card1"
-        android:layout_marginTop="30dp">
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/theme"
+        app:cardBackgroundColor="@color/background">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/theme"
             android:orientation="vertical">
 
 
@@ -80,30 +93,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/appid"
+                android:layout_centerHorizontal="true"
+                android:background="@color/theme"
                 android:text="Add Members"
                 android:textColor="@color/yellow"
                 android:textSize="24sp"
-                android:layout_centerHorizontal="true"
-                android:background="#FFFFFF" />
+                android:layout_marginBottom="20dp" />
+
+            <Button
+                android:id="@+id/addmember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="330dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/theme"
+                android:text="ADD"
+                android:textColor="@color/yellow" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
+                android:id="@+id/addmem"
+                android:layout_width="330dp"
                 android:layout_height="match_parent"
-                android:theme="@style/AppTheme"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="-50dp"
+                android:background="@color/theme"
+                android:textColorHint="@color/yellow"
+                android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/addmem"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="-100dp"
-                    android:hint="Name" />
+                    android:background="@color/theme"
+                    android:hint="Name"
+                    android:textColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent" />
 
-                <ListView
-                    android:id="@+id/listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@color/colorAccent"
+                android:outlineAmbientShadowColor="@color/yellow"/>
+
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
