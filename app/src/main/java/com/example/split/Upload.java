@@ -11,38 +11,38 @@ public class Upload {
     private String name;
     private ArrayList<String> members = new ArrayList<>();
 
-    public Upload(Task<Uri> downloadUrl)
+    public Upload()
     {
 
     }
 
-    public Upload(String mImageUrl, String name, ArrayList<String> arrayList) {
+    public Upload(String mImageUrl, String name, ArrayList<String> members) {
         this.mImageUrl = mImageUrl;
         this.name = name;
-        this.members = arrayList;
+        this.members = members;
     }
 
     public String getmImageUrl() {
         return mImageUrl;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<String> getArrayList() {
-        return members;
-    }
-
     public void setmImageUrl(String mImageUrl) {
         this.mImageUrl = mImageUrl;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setArrayList(ArrayList<String> arrayList) {
-        this.members = arrayList;
+    public ArrayList<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(ArrayList<String> members) {
+        this.members = members;
     }
 }

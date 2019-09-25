@@ -4,18 +4,27 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ThrowOnExtraProperties;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -40,6 +49,10 @@ public class Home extends AppCompatActivity {
     Toolbar mToolbar;
     int backButtonCount=0;
     RecyclerView recyclerView;
+    private DatabaseReference mDatabaseReference;
+    private StorageReference storageRef;
+    Upload upload;
+    String generatedFilePath;
 
     //var
     private ArrayList<String> mNames= new ArrayList<>();
@@ -53,9 +66,9 @@ public class Home extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Log.d(TAG, "onCreate: ");
-        initImageBitmaps();
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = current_user.getUid();
+        storageRef= FirebaseStorage.getInstance().getReference();
 
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -76,6 +89,7 @@ public class Home extends AppCompatActivity {
         });
 
 */
+        initImageBitmaps();
     }
 
     @Override
@@ -105,7 +119,29 @@ public class Home extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
+        mDatabaseReference=FirebaseDatabase.getInstance().getReference("groups");
+        mDatabaseReference.keepSynced(true);
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mImageUrls.clear();
+                mNames.clear();
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                {
+                    upload = dataSnapshot1.getValue(Upload.class);
+                    mImageUrls.add(upload.getmImageUrl());
+                    mNames.add(upload.getName());
+                }
+                initRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(),databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+       /* mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
         mNames.add("Roommates");
 
         mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
@@ -113,26 +149,7 @@ public class Home extends AppCompatActivity {
 
         mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
         mNames.add("Friends");
-
-        /*mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mNames.add("Rocky Mountain National Park");
-
-
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
-
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");*/
+*/
 
         initRecyclerView();
     }

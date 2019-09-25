@@ -29,8 +29,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -56,17 +59,18 @@ public class NewAccount extends AppCompatActivity {
     private CircleImageView groupImage;
     private static final int PICK_IMAGE = 1;
     private static final int PICK_IMAGE_REQUEST = 1;
-    Uri imageUri,resultUri;
+    Uri imageUri,resultUri,uri1;
     Toolbar mToolbar;
     ListView listView;
     Button addmember;
     Bitmap bitmap;
     TextInputLayout addmem;
-    private StorageReference mStorageRef;
+    private StorageReference mStorageRef,ms;
     private DatabaseReference mDatabaseRef;
     byte[] data1;
     TextInputLayout gname;
     final ArrayList<String> members= new ArrayList<>();
+    private ProgressDialog mNewGroup;
 
 
     @Override
@@ -80,11 +84,13 @@ public class NewAccount extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         gname=(TextInputLayout) findViewById(R.id.gname);
+        mNewGroup= new ProgressDialog(NewAccount.this);
         listView=(ListView)findViewById(R.id.listview);
         addmember=(Button)findViewById(R.id.addmember);
         addmem=(TextInputLayout)findViewById(R.id.addmem);
         mStorageRef= FirebaseStorage.getInstance().getReference("uploads");
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("groups");
+        ms=FirebaseStorage.getInstance().getReference();
 
         addmember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +165,9 @@ public class NewAccount extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),"Save",Toast.LENGTH_SHORT).show();
+                mNewGroup.setCanceledOnTouchOutside(false);
+                mNewGroup.setMessage("Creating your Group!");
+                mNewGroup.show();
                 uploadFile();
             }
         });
@@ -235,20 +244,60 @@ public class NewAccount extends AppCompatActivity {
         if(data1!=null) {
             final String name = gname.getEditText().getText().toString();
             if (!name.isEmpty()) {
-                UploadTask uploadTask = mStorageRef.child(name+"."+getFileExtension(resultUri)).putBytes(data1);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                ms =mStorageRef.child(name+"."+getFileExtension(resultUri));
+                UploadTask uploadTask = ms.putBytes(data1);
+
+                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+
+                        // Continue with the task to get the download URL
+                        return ms.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            Upload upload = new Upload(downloadUri.toString().trim(), name, members);
+                            //String uploadId = mDatabaseRef.push().getKey();
+                            mDatabaseRef.child(name).setValue(upload);
+                            Intent intent= new Intent(getApplicationContext(),Home.class);
+                            startActivity(intent);
+
+                        } else {
+                            // Handle failures
+                            // ...
+                        }
+                    }
+                });
+
+
+                /*uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        Upload upload = new Upload(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(), name, members);
+                        mNewGroup.dismiss();
+                        ms.child("uploads/"+name+".null").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                uri1=uri;
+                            }
+                        });
+                        Upload upload = new Upload(uri1.toString().trim(), name, members);
                         //String uploadId = mDatabaseRef.push().getKey();
                         mDatabaseRef.child(name).setValue(upload);
-
+                        Intent intent= new Intent(getApplicationContext(),Home.class);
+                        startActivity(intent);
                     }
                 })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
+                                mNewGroup.hide();
                                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         })
@@ -257,7 +306,7 @@ public class NewAccount extends AppCompatActivity {
                             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
                             }
-                        });
+                        });*/
             }
             else
             {
@@ -269,8 +318,7 @@ public class NewAccount extends AppCompatActivity {
         {
             Toast.makeText(getApplicationContext(),"No FIle Selected",Toast.LENGTH_SHORT).show();
         }
-        Intent intent= new Intent(getApplicationContext(),Home.class);
-        startActivity(intent);
+
     }
 
 }
