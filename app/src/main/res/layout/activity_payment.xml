@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Expense">
+    tools:context=".Payment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="410dp"
+        android:layout_height="490dp"
         android:layout_alignParentStart="true"
         android:layout_marginTop="55dp">
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="210dp"
+                android:layout_marginTop="215dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -106,7 +106,32 @@
                     android:inputType="numberDecimal" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:id="@+id/payName1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/amount"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                >
 
+                <TextView
+                    android:id="@+id/textviewuseless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Paid To"
+                    style="@style/TextView.InputLabel"
+                    />
+
+                <Spinner
+                    android:id="@+id/payName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
+                    />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/date"
@@ -114,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="0dp"
-                android:layout_below="@+id/amount"
+                android:layout_below="@+id/payName1"
                 android:layout_marginTop="5dp"
                 android:theme="@style/AppTheme">
 

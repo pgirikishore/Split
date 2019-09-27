@@ -53,6 +53,7 @@
         android:inputType="textPersonName"
         android:textColor="@android:color/background_light"
         android:textColorHint="@android:color/background_light"
+        android:theme="@style/AppTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,15 +68,15 @@
         android:layout_marginBottom="171dp"
         android:ems="10"
         android:hint="Password"
-        android:textColor="#FFF"
         android:inputType="textPassword"
+        android:textColor="#FFF"
         android:textColorHint="@android:color/background_light"
+        android:theme="@style/AppTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.218"
-        />
+        app:layout_constraintVertical_bias="0.218" />
 
     <Button
         android:id="@+id/button"

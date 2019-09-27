@@ -33,7 +33,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mContext = mContext;
     }
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,9 +60,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 group.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 group.putExtra("Name", mImageName.get(position));
                 mContext.startActivity(group);
-
-
-
             }
         });
     }

@@ -70,7 +70,10 @@ public class NewAccount extends AppCompatActivity {
     byte[] data1;
     TextInputLayout gname;
     final ArrayList<String> members= new ArrayList<>();
+    final ArrayList<Double>  NetAmt=new ArrayList<>();
     private ProgressDialog mNewGroup;
+    FirebaseAuth mFirebaseAuth;
+    String uploadId;
 
 
     @Override
@@ -91,6 +94,7 @@ public class NewAccount extends AppCompatActivity {
         mStorageRef= FirebaseStorage.getInstance().getReference("uploads");
         mDatabaseRef= FirebaseDatabase.getInstance().getReference("groups");
         ms=FirebaseStorage.getInstance().getReference();
+        mFirebaseAuth=FirebaseAuth.getInstance();
 
         addmember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +248,12 @@ public class NewAccount extends AppCompatActivity {
         if(data1!=null) {
             final String name = gname.getEditText().getText().toString();
             if (!name.isEmpty()) {
-                ms =mStorageRef.child(name+"."+getFileExtension(resultUri));
+                for(int i=0;i<members.size();i++)
+                {
+                    NetAmt.add(0.00);
+                }
+                uploadId = mDatabaseRef.push().getKey();
+                ms =mStorageRef.child(uploadId.trim()+"."+getFileExtension(resultUri));
                 UploadTask uploadTask = ms.putBytes(data1);
 
                 Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -262,10 +271,10 @@ public class NewAccount extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
-                            Upload upload = new Upload(downloadUri.toString().trim(), name, members);
-                            //String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(name).setValue(upload);
+                            Upload upload = new Upload(downloadUri.toString().trim(), name, mFirebaseAuth.getCurrentUser().getEmail(),members,NetAmt);
+                            mDatabaseRef.child(uploadId).setValue(upload);
                             Intent intent= new Intent(getApplicationContext(),Home.class);
+                            intent.putExtra("id",uploadId);
                             startActivity(intent);
 
                         } else {

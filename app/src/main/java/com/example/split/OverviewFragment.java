@@ -18,6 +18,12 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -36,6 +42,8 @@ public class OverviewFragment extends Fragment {
     private View view;
     private FloatingActionMenu group1;
     private FloatingActionButton expense,payment;
+    private DatabaseReference mDatabaseReference;
+    private FirebaseAuth mFirebaseAuth;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -49,6 +57,7 @@ public class OverviewFragment extends Fragment {
         view= inflater.inflate(R.layout.fragment_overview, container, false);
         recyclerView=(RecyclerView)view.findViewById(R.id.recylerv_view1);
         expense=(FloatingActionButton)view.findViewById(R.id.expense);
+        mFirebaseAuth=FirebaseAuth.getInstance();
 
         expense.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +72,7 @@ public class OverviewFragment extends Fragment {
         payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getContext(),Expense.class);
+                Intent intent=new Intent(getContext(),Payment.class);
                 intent.putExtra("name","payment");
                 startActivity(intent);
             }
@@ -77,7 +86,39 @@ public class OverviewFragment extends Fragment {
     private void initNames(){
         Log.d(TAG, "initNames: ");
 
-        mNammes.add("Giri Kishore");
+        mDatabaseReference= FirebaseDatabase.getInstance().getReference("groups");
+        mDatabaseReference.keepSynced(true);
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mNammes.clear();
+                mRate.clear();
+                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
+                {
+                    Upload upload=dataSnapshot1.getValue(Upload.class);
+                    if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                    {
+
+                        for(int i=0;i<upload.getMembers().size();i++)
+                        {
+                            mNammes.add(upload.getMembers().get(i));
+                            mRate.add("INR "+upload.getNetAmt().get(i));
+                        }
+                    }
+                }
+                initRecyclerView();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+
+        });
+
+
+        /*mNammes.add("Giri Kishore");
         mRate.add("INR 1500.00");
 
         mNammes.add("Karthik MK");
@@ -87,10 +128,10 @@ public class OverviewFragment extends Fragment {
         mRate.add("-INR 800.00");
 
         mNammes.add("Andrew Winston");
-        mRate.add("-INR 1200.00");
+        mRate.add("-INR 1200.00");*/
 
 
-        initRecyclerView();
+
 
     }
 

@@ -9,18 +9,23 @@ import java.util.ArrayList;
 public class Upload {
     private String mImageUrl;
     private String name;
+    private String createdBy;
     private ArrayList<String> members = new ArrayList<>();
+    private ArrayList<Double> NetAmt= new ArrayList<>();
 
     public Upload()
     {
 
     }
 
-    public Upload(String mImageUrl, String name, ArrayList<String> members) {
+    public Upload(String mImageUrl, String name, String createdBy, ArrayList<String> members, ArrayList<Double> netAmt) {
         this.mImageUrl = mImageUrl;
         this.name = name;
+        this.createdBy = createdBy;
         this.members = members;
+        NetAmt = netAmt;
     }
+
 
     public String getmImageUrl() {
         return mImageUrl;
@@ -38,11 +43,27 @@ public class Upload {
         this.name = name;
     }
 
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     public ArrayList<String> getMembers() {
         return members;
     }
 
     public void setMembers(ArrayList<String> members) {
         this.members = members;
+    }
+
+    public ArrayList<Double> getNetAmt() {
+        return NetAmt;
+    }
+
+    public void setNetAmt(ArrayList<Double> netAmt) {
+        NetAmt = netAmt;
     }
 }

@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +54,7 @@ public class Home extends AppCompatActivity {
     private StorageReference storageRef;
     Upload upload;
     String generatedFilePath;
+    public static String idgroup;
 
     //var
     private ArrayList<String> mNames= new ArrayList<>();
@@ -65,6 +67,8 @@ public class Home extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        idgroup=getIntent().getStringExtra("id");
+
         Log.d(TAG, "onCreate: ");
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = current_user.getUid();
@@ -74,6 +78,8 @@ public class Home extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Welcome");
         mToolbar.getOverflowIcon().setColorFilter(Color.WHITE , PorterDuff.Mode.SRC_ATOP);
+
+        mFirebaseAuth=FirebaseAuth.getInstance();
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),
                 DividerItemDecoration.VERTICAL));
@@ -129,8 +135,11 @@ public class Home extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
                 {
                     upload = dataSnapshot1.getValue(Upload.class);
-                    mImageUrls.add(upload.getmImageUrl());
-                    mNames.add(upload.getName());
+                    if(mFirebaseAuth.getCurrentUser().getEmail().equals(upload.getCreatedBy()))
+                    {
+                        mImageUrls.add(upload.getmImageUrl());
+                        mNames.add(upload.getName());
+                    }
                 }
                 initRecyclerView();
             }
