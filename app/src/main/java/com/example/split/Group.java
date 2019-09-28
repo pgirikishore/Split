@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -59,6 +60,12 @@ public class Group extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent i= new Intent(this, Home.class);
+        startActivity(i);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.group_menu, menu);
@@ -89,6 +96,8 @@ public class Group extends AppCompatActivity {
                             mDatabaseRef1.removeValue();
                             mStorageRef1=FirebaseStorage.getInstance().getReference("uploads/"+key+".null");
                             mStorageRef1.delete();
+                            DatabaseReference db= FirebaseDatabase.getInstance().getReference("Transaction").child(key);
+                            db.removeValue();
                             Intent del= new Intent(getApplicationContext(), Home.class);
                             startActivity(del);
                         }

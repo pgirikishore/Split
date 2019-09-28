@@ -27,6 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +47,8 @@ public class OverviewFragment extends Fragment {
     private FloatingActionButton expense,payment;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
+
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -63,7 +68,7 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent= new Intent(getContext(),Expense.class);
-                intent.putExtra("name","expense");
+                intent.putExtra("name",Group.name);
                 startActivity(intent);
             }
         });
@@ -73,7 +78,7 @@ public class OverviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getContext(),Payment.class);
-                intent.putExtra("name","payment");
+                intent.putExtra("name",Group.name);
                 startActivity(intent);
             }
         });
@@ -98,11 +103,12 @@ public class OverviewFragment extends Fragment {
                     Upload upload=dataSnapshot1.getValue(Upload.class);
                     if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
                     {
+                        df2.setRoundingMode(RoundingMode.UP);
 
                         for(int i=0;i<upload.getMembers().size();i++)
                         {
                             mNammes.add(upload.getMembers().get(i));
-                            mRate.add("INR "+upload.getNetAmt().get(i));
+                            mRate.add("INR "+df2.format(upload.getNetAmt().get(i)));
                         }
                     }
                 }

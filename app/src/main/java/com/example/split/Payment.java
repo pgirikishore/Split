@@ -5,15 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,15 +30,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class Payment extends AppCompatActivity {
 
 
     Toolbar mToolbar;
     TextView textView18;
-    TextInputLayout Title,date;
+    TextInputLayout Title,date,amount;
     Spinner payName,paidName;
-    TextView textviewuseless;
+    Button save;
+    ProgressDialog mPayment;
+    DatabaseReference mDatabaseRef,mDR;
+    Transaction trans;
+    String PaidBy,PaidTo,Title1,date1;
+    Double Amt;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -40,17 +52,20 @@ public class Payment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        String type=getIntent().getStringExtra("name");
-
         androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Expense");
+        getSupportActionBar().setTitle("Payment");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         textView18=(TextView)findViewById(R.id.textView18);
+        textView18.setText("Add Your Payment!");
         date=(TextInputLayout) findViewById(R.id.date);
         Title=(TextInputLayout)findViewById(R.id.Title);
-        textviewuseless=(TextView)findViewById(R.id.textviewuseless);
+        Title.getEditText().setText("Payment");
+        save=(Button)findViewById(R.id.save);
+        amount=(TextInputLayout)findViewById(R.id.amount);
+        final String name=getIntent().getStringExtra("name");
+        mPayment= new ProgressDialog(this);
 
         paidName=(Spinner)findViewById(R.id.paidName);
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, android.R.id.text1);
@@ -58,7 +73,7 @@ public class Payment extends AppCompatActivity {
         paidName.setAdapter(spinnerAdapter);
 
 
-        DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("groups");
+        final DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference("groups");
         mDatabaseReference.keepSynced(true);
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -141,14 +156,6 @@ public class Payment extends AppCompatActivity {
         //spinnerAdapter.add("value");
         //spinnerAdapter.notifyDataSetChanged();
 
-        if(type.equals("payment"))
-        {
-            textView18.setText("Add Your Payment!");
-            Title.getEditText().setText("Payment");
-            Title.getEditText().setEnabled(false);
-
-            getSupportActionBar().setTitle("Payment");
-        }
 
         date.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,8 +181,95 @@ public class Payment extends AppCompatActivity {
         });
 
 
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Title1="Payment";
+                PaidBy=paidName.getSelectedItem().toString();
+                PaidTo=payName.getSelectedItem().toString();
+                date1= date.getEditText().getText().toString();
+
+
+                if(amount.getEditText().getText().toString().isEmpty())
+                {
+                    amount.setError("Enter the Amount");
+                    amount.requestFocus();
+                }
+                else if(date1.isEmpty())
+                {
+                    date.setError("Enter the Date");
+                    date.requestFocus();
+                }
+                else
+                {
+                    mPayment.setMessage("Processing");
+                    mPayment.setCanceledOnTouchOutside(false);
+                    mPayment.show();
+                    Amt= Double.valueOf(amount.getEditText().getText().toString());
+                    mDatabaseRef=FirebaseDatabase.getInstance().getReference("groups");
+                    mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                            {
+                                Upload upload= dataSnapshot1.getValue(Upload.class);
+
+                                if(upload.getName().equals(name) && upload.getCreatedBy().equals((FirebaseAuth.getInstance().getCurrentUser()).getEmail().trim()))
+                                {
+                                    for(int i=0;i<upload.getMembers().size();i++)
+                                    {
+                                        if(upload.getMembers().get(i).equals(PaidBy))
+                                        {
+                                            Double netamt= upload.getNetAmt().get(i);
+                                            netamt +=Amt;
+                                            mDatabaseRef.child(dataSnapshot1.getKey()).child("netAmt").child(String.valueOf(i)).setValue(netamt);
+                                        }
+                                        if(upload.getMembers().get(i).equals(PaidTo))
+                                        {
+                                            Double netamt= upload.getNetAmt().get(i);
+                                            netamt -=Amt;
+                                            mDatabaseRef.child(dataSnapshot1.getKey()).child("netAmt").child(String.valueOf(i)).setValue(netamt);
+                                        }
+                                    }
+
+                                    trans = new Transaction(Title1,PaidBy,PaidTo,date1,Amt);
+                                    mDR=FirebaseDatabase.getInstance().getReference("Transaction").child(((dataSnapshot1.getKey())));
+                                    String key=mDR.push().getKey();
+                                    mDR.child(key).setValue(trans).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            mPayment.dismiss();
+                                            Intent paySucc=new Intent(getApplicationContext(),Group.class);
+                                            paySucc.putExtra("Name",name);
+                                            startActivity(paySucc);
+                                        }
+                                    })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    mPayment.hide();
+                                                    Toast.makeText(getApplicationContext(),"Failed",Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                    break;
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+        });
+
 
     }
+
 
 
     @Override
