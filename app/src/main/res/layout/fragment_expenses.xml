@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ExpensesFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Expenses Fragment"
-        android:layout_centerInParent="true"
-        android:textSize="26sp"
-        android:textStyle="bold" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recylerv_view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E8E8E8"
+        android:backgroundTint="#E8E8E8"></androidx.recyclerview.widget.RecyclerView>
 
-</RelativeLayout>
+
+</LinearLayout>

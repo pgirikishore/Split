@@ -20,13 +20,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="410dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="55dp">
-
 
 
         <RelativeLayout
@@ -35,12 +28,11 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/Title"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="145dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -57,8 +49,8 @@
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="80dp"
                 android:text="Add Your Expense!"
                 android:textColor="@color/yellow"
                 android:textSize="28sp"
@@ -66,10 +58,11 @@
 
             <LinearLayout
                 android:id="@+id/paidName1"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/Title"
                 android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
                 android:orientation="vertical"
                 >
 
@@ -92,11 +85,10 @@
             </LinearLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/amount"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="210dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="295dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -110,12 +102,12 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="0dp"
                 android:layout_below="@+id/amount"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -130,7 +122,7 @@
 
             <Button
                 android:id="@+id/save"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="40dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/theme"
@@ -142,6 +134,6 @@
 
         </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>

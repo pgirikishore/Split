@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="15dp" android:id="@+id/parent_layout2"
+    android:background="@color/white" android:backgroundTint="@color/white">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:textColor="#000"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"
+        android:text="INR 500"
+        android:padding="5dp"
+        android:textColor="#191919"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/paidby"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paid by Giri"
+        android:layout_below="@+id/title"
+        android:textSize="14sp"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/amount"
+        android:text="Sept 29, 2019"
+        android:textSize="14sp"
+        android:padding="5dp"/>
+
+
+
+
+</RelativeLayout>

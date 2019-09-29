@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:backgroundTint="#FFFFFF"
     tools:context=".Payment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -20,13 +22,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card"
-        android:layout_width="match_parent"
-        android:layout_height="490dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="55dp">
-
 
 
         <RelativeLayout
@@ -35,12 +30,11 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/Title"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="140dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -58,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="70dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="80dp"
                 android:text="Add Your Expense!"
                 android:textColor="@color/yellow"
                 android:textSize="28sp"
@@ -66,37 +60,35 @@
 
             <LinearLayout
                 android:id="@+id/paidName1"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/Title"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textviewuseless1"
+                    style="@style/TextView.InputLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Paid By"
-                    style="@style/TextView.InputLabel"
-                    />
+                    android:text="Paid By" />
 
                 <Spinner
                     android:id="@+id/paidName"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"
-                    />
+                    android:spinnerMode="dialog" />
 
             </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/amount"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="215dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="285dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -108,39 +100,37 @@
 
             <LinearLayout
                 android:id="@+id/payName1"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/amount"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textviewuseless"
+                    style="@style/TextView.InputLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Paid To"
-                    style="@style/TextView.InputLabel"
-                    />
+                    android:text="Paid To" />
 
                 <Spinner
                     android:id="@+id/payName"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"
-                    />
+                    android:spinnerMode="dialog" />
 
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/date"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="0dp"
                 android:layout_below="@+id/payName1"
-                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="25dp"
                 android:theme="@style/AppTheme">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -155,18 +145,18 @@
 
             <Button
                 android:id="@+id/save"
-                android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/date"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
                 android:background="@color/theme"
                 android:text="SAVE"
-                android:layout_below="@+id/date"
                 android:textColor="@color/yellow"
-                android:textSize="18sp"
-                android:layout_centerHorizontal="true"/>
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+
 
 </RelativeLayout>
