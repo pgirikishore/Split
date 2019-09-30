@@ -36,6 +36,7 @@
                 android:textColor="@color/yellow" />
 
             <Button
+                android:id="@+id/invite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/settleup"

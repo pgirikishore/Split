@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 public class Expense extends AppCompatActivity {
@@ -42,6 +43,7 @@ public class Expense extends AppCompatActivity {
     DatabaseReference mDatabaseRef,mDR;
     String name;
     Spinner paidName;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +81,15 @@ public class Expense extends AppCompatActivity {
                 {
                     Upload upload=dataSnapshot1.getValue(Upload.class);
                     FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
-                    if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                    for(int j=0;j<upload.getViewers().size();j++)
                     {
-
-                        for(int i=0;i<upload.getMembers().size();i++)
+                        if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("viewers").child(String.valueOf(j)).getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
                         {
-                            spinnerAdapter.add(upload.getMembers().get(i));
+
+                            for(int i=0;i<upload.getMembers().size();i++)
+                            {
+                                spinnerAdapter.add(upload.getMembers().get(i));
+                            }
                         }
                     }
                 }
@@ -159,7 +164,7 @@ public class Expense extends AppCompatActivity {
                             {
                                 Upload upload= dataSnapshot1.getValue(Upload.class);
 
-                                if(upload.getName().equals(name) && upload.getCreatedBy().equals((FirebaseAuth.getInstance().getCurrentUser()).getEmail().trim()))
+                                if(upload.getName().equals(name) && upload.getViewers().contains((FirebaseAuth.getInstance().getCurrentUser()).getEmail().trim()))
                                 {
                                     for(int i=0;i<upload.getMembers().size();i++)
                                     {
@@ -179,7 +184,7 @@ public class Expense extends AppCompatActivity {
                                         }
                                     }
 
-                                    Transaction trans = new Transaction(Title1,PaidBy,"",date1,Amt);
+                                    Transaction trans = new Transaction(Title1,PaidBy,"",date1,Double.parseDouble(df2.format(Amt)));
                                     mDR=FirebaseDatabase.getInstance().getReference("Transaction").child(((dataSnapshot1.getKey())));
                                     String key=mDR.push().getKey();
                                     mDR.child(key).setValue(trans).addOnSuccessListener(new OnSuccessListener<Void>() {

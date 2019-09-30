@@ -58,13 +58,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:onClick="joinGroup"
             android:src="@drawable/ic_group_black_24dp"
+            app:fab_colorNormal="@color/yellow"
+            app:fab_colorPressed="@color/yellow"
             app:fab_label="Join Group"
             app:fab_showShadow="true"
             app:menu_labels_showShadow="true"
-            app:srcCompat="@drawable/ic_group_black_24dp"
-            app:fab_colorNormal="@color/yellow"
-            app:fab_colorPressed="@color/yellow"/>
+            app:srcCompat="@drawable/ic_group_black_24dp" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/dining"

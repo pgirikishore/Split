@@ -1,7 +1,11 @@
 package com.example.split;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,9 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -47,6 +56,9 @@ public class OverviewFragment extends Fragment {
     private FloatingActionButton expense,payment;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mFirebaseAuth;
+    private Button settleup;
+    private Button invite;
+    private String inviteKey;
 
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
@@ -62,7 +74,9 @@ public class OverviewFragment extends Fragment {
         view= inflater.inflate(R.layout.fragment_overview, container, false);
         recyclerView=(RecyclerView)view.findViewById(R.id.recylerv_view1);
         expense=(FloatingActionButton)view.findViewById(R.id.expense);
+        settleup=(Button)view.findViewById(R.id.settleup);
         mFirebaseAuth=FirebaseAuth.getInstance();
+        invite=(Button)view.findViewById(R.id.invite);
 
         expense.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +99,78 @@ public class OverviewFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                 DividerItemDecoration.VERTICAL));
         initNames();
+
+        invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                DatabaseReference ref= FirebaseDatabase.getInstance().getReference("groups");
+                ref.keepSynced(true);
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                        {
+                            Upload upload1=dataSnapshot1.getValue(Upload.class);
+                            for(int j=0;j<upload1.getViewers().size();j++)
+                            {
+                                if(dataSnapshot1.child("name").getValue().equals(Group.name)  &&  dataSnapshot1.child("viewers").child(String.valueOf(j)).getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                                {
+                                    inviteKey = dataSnapshot1.getKey();
+                                    //alert.setMessage("\t"+inviteKey.substring(inviteKey.length()-6)+"\t\n\t Others can access you group\t\n\t\t using this code\n" );
+                                    //TextView myMsg=new TextView(getContext());
+                                    //myMsg.setText("\n\n"+inviteKey.substring(inviteKey.length()-6)+"\n\n\n Others can access this group\n using this code\n");
+                                    //myMsg.setTextSize(20);
+                                    //myMsg.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+
+
+                                    Context context =getContext();
+                                    LinearLayout layout = new LinearLayout(context);
+                                    layout.setOrientation(LinearLayout.VERTICAL);
+
+// Add a TextView here for the "Title" label, as noted in the comments
+                                    final TextView titleBox = new TextView(context);
+                                    titleBox.setHint("\n"+inviteKey.substring(inviteKey.length()-6));
+                                    titleBox.setGravity(Gravity.CENTER_HORIZONTAL);
+                                    titleBox.setTextSize(30);
+                                    titleBox.setTextColor(Color.BLACK);
+                                    layout.addView(titleBox); // Notice this is an add method
+
+// Add another TextView here for the "Description" label
+                                    final TextView descriptionBox = new TextView(context);
+                                    descriptionBox.setHint("\n Others can access this group\n using this code\n\n");
+                                    descriptionBox.setGravity(Gravity.CENTER_HORIZONTAL);
+                                    descriptionBox.setTextSize(15);
+                                    layout.addView(descriptionBox); // Another add method
+
+
+                                    alert.setView(layout);
+
+
+                                    //alert.setView(myMsg);
+
+
+
+
+
+                                    alert.show();
+                                    //inviteKey.append(dataSnapshot1.getKey().charAt(dataSnapshot1.getKey().length()-5));
+                                    //inviteKey.append(dataSnapshot1.getKey().charAt(dataSnapshot1.getKey().length()-4));
+                                    //inviteKey.append(dataSnapshot1.getKey().charAt(dataSnapshot1.getKey().length()-3));
+                                    //inviteKey.append(dataSnapshot1.getKey().charAt(dataSnapshot1.getKey().length()-2));
+                                    //inviteKey.append(dataSnapshot1.getKey().charAt(dataSnapshot1.getKey().length()-1));
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
         return view;
     }
 
@@ -101,14 +187,17 @@ public class OverviewFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
                 {
                     Upload upload=dataSnapshot1.getValue(Upload.class);
-                    if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                    for(int j=0;j<upload.getViewers().size();j++)
                     {
-                        df2.setRoundingMode(RoundingMode.UP);
-
-                        for(int i=0;i<upload.getMembers().size();i++)
+                        if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("viewers").child(String.valueOf(j)).getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
                         {
-                            mNammes.add(upload.getMembers().get(i));
-                            mRate.add("INR "+df2.format(upload.getNetAmt().get(i)));
+                            df2.setRoundingMode(RoundingMode.UP);
+
+                            for(int i=0;i<upload.getMembers().size();i++)
+                            {
+                                mNammes.add(upload.getMembers().get(i));
+                                mRate.add("INR "+df2.format(upload.getNetAmt().get(i)));
+                            }
                         }
                     }
                 }

@@ -127,10 +127,13 @@ public class ExpensesFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1:dataSnapshot3.getChildren())
                 {
                     Upload upload=dataSnapshot1.getValue(Upload.class);
-                    if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                    for(int j=0;j<upload.getViewers().size();j++)
                     {
-                        key=dataSnapshot1.getKey();
+                        if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("viewers").child(String.valueOf(j)).getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                        {
+                            key=dataSnapshot1.getKey();
 
+                        }
                     }
                 }
                 mDatabaseRef1=FirebaseDatabase.getInstance().getReference("Transaction").child(key);

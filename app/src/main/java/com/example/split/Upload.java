@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Upload {
     private String mImageUrl;
     private String name;
-    private String createdBy;
+    private ArrayList<String> Viewers  = new ArrayList<>();
     private ArrayList<String> members = new ArrayList<>();
     private ArrayList<Double> NetAmt= new ArrayList<>();
 
@@ -18,14 +18,13 @@ public class Upload {
 
     }
 
-    public Upload(String mImageUrl, String name, String createdBy, ArrayList<String> members, ArrayList<Double> netAmt) {
+    public Upload(String mImageUrl, String name, ArrayList<String> viewers, ArrayList<String> members, ArrayList<Double> netAmt) {
         this.mImageUrl = mImageUrl;
         this.name = name;
-        this.createdBy = createdBy;
+        Viewers = viewers;
         this.members = members;
         NetAmt = netAmt;
     }
-
 
     public String getmImageUrl() {
         return mImageUrl;
@@ -43,12 +42,12 @@ public class Upload {
         this.name = name;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public ArrayList<String> getViewers() {
+        return Viewers;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setViewers(ArrayList<String> viewers) {
+        Viewers = viewers;
     }
 
     public ArrayList<String> getMembers() {

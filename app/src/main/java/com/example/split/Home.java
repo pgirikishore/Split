@@ -1,6 +1,8 @@
 package com.example.split;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -25,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -32,11 +35,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -126,7 +133,7 @@ public class Home extends AppCompatActivity {
         Log.d(TAG, "initImageBitmaps: preparing bitmaps.");
 
         mDatabaseReference=FirebaseDatabase.getInstance().getReference("groups");
-        mDatabaseReference.keepSynced(true);
+        //mDatabaseReference.keepSynced(true);
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -135,7 +142,7 @@ public class Home extends AppCompatActivity {
                 for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
                 {
                     upload = dataSnapshot1.getValue(Upload.class);
-                    if(mFirebaseAuth.getCurrentUser().getEmail().equals(upload.getCreatedBy()))
+                    if(upload.getViewers().contains(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                     {
                         mImageUrls.add(upload.getmImageUrl());
                         mNames.add(upload.getName());
@@ -183,6 +190,51 @@ public class Home extends AppCompatActivity {
         Intent din = new Intent(getApplicationContext(),Dining.class);
         startActivity(din);
         //Toast.makeText(Home.this,"Dining",Toast.LENGTH_SHORT).show();
+    }
+
+    public void joinGroup(View v)
+    {
+        //Toast.makeText(getApplicationContext(),"Join Group",Toast.LENGTH_SHORT).show();
+
+        AlertDialog.Builder image=new AlertDialog.Builder(Home.this);
+        image.setTitle("JOIN GROUP");
+        image.setMessage("Enter the Invite Code");
+
+        final EditText input = new EditText(Home.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        //input.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setLayoutParams(lp);
+        image.setView(input);
+
+        image.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final DatabaseReference mDatabaseRef= FirebaseDatabase.getInstance().getReference("groups");
+
+                mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                        {
+                            Upload upload=dataSnapshot1.getValue(Upload.class);
+                            if(dataSnapshot1.getKey().endsWith(input.getText().toString()))
+                            {
+                                mDatabaseRef.child(dataSnapshot1.getKey()).child("viewers").child(String.valueOf(upload.getViewers().size())).setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                Home home= new Home();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+        image.show();
     }
 
     @Override

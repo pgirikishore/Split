@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -45,6 +46,7 @@ public class Payment extends AppCompatActivity {
     Transaction trans;
     String PaidBy,PaidTo,Title1,date1;
     Double Amt;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -83,12 +85,15 @@ public class Payment extends AppCompatActivity {
                 {
                     Upload upload=dataSnapshot1.getValue(Upload.class);
                     FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
-                    if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                    for(int j=0;j<upload.getViewers().size();j++)
                     {
-
-                        for(int i=0;i<upload.getMembers().size();i++)
+                        if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("viewers").child(String.valueOf(j)).getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
                         {
-                            spinnerAdapter.add(upload.getMembers().get(i));
+
+                            for(int i=0;i<upload.getMembers().size();i++)
+                            {
+                                spinnerAdapter.add(upload.getMembers().get(i));
+                            }
                         }
                     }
                 }
@@ -121,14 +126,17 @@ public class Payment extends AppCompatActivity {
                         {
                             Upload upload=dataSnapshot1.getValue(Upload.class);
                             FirebaseAuth mFirebaseAuth=FirebaseAuth.getInstance();
-                            if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("createdBy").getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
+                            for(int j=0;j<upload.getViewers().size();j++)
                             {
-
-                                for(int i=0;i<upload.getMembers().size();i++)
+                                if(dataSnapshot1.child("name").getValue().equals(Group.name) && dataSnapshot1.child("viewers").child(String.valueOf(j)).getValue().equals(mFirebaseAuth.getCurrentUser().getEmail()))
                                 {
-                                    if(!(paidName.getSelectedItem().toString().equals(upload.getMembers().get(i))))
+
+                                    for(int i=0;i<upload.getMembers().size();i++)
                                     {
-                                        spinnerAdapter1.add(upload.getMembers().get(i));
+                                        if(!(paidName.getSelectedItem().toString().equals(upload.getMembers().get(i))))
+                                        {
+                                            spinnerAdapter1.add(upload.getMembers().get(i));
+                                        }
                                     }
                                 }
                             }
@@ -215,7 +223,7 @@ public class Payment extends AppCompatActivity {
                             {
                                 Upload upload= dataSnapshot1.getValue(Upload.class);
 
-                                if(upload.getName().equals(name) && upload.getCreatedBy().equals((FirebaseAuth.getInstance().getCurrentUser()).getEmail().trim()))
+                                if(upload.getName().equals(name) && upload.getViewers().contains((FirebaseAuth.getInstance().getCurrentUser()).getEmail().trim()))
                                 {
                                     for(int i=0;i<upload.getMembers().size();i++)
                                     {
@@ -233,7 +241,7 @@ public class Payment extends AppCompatActivity {
                                         }
                                     }
 
-                                    trans = new Transaction(Title1,PaidBy,PaidTo,date1,Amt);
+                                    trans = new Transaction(Title1,PaidBy,PaidTo,date1,Double.valueOf(df2.format(Amt).toString()));
                                     mDR=FirebaseDatabase.getInstance().getReference("Transaction").child(((dataSnapshot1.getKey())));
                                     String key=mDR.push().getKey();
                                     mDR.child(key).setValue(trans).addOnSuccessListener(new OnSuccessListener<Void>() {

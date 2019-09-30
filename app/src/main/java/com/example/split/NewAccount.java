@@ -71,6 +71,7 @@ public class NewAccount extends AppCompatActivity {
     TextInputLayout gname;
     final ArrayList<String> members= new ArrayList<>();
     final ArrayList<Double>  NetAmt=new ArrayList<>();
+    final ArrayList<String>  Viewers=new ArrayList<>();
     private ProgressDialog mNewGroup;
     FirebaseAuth mFirebaseAuth;
     String uploadId;
@@ -271,7 +272,8 @@ public class NewAccount extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
-                            Upload upload = new Upload(downloadUri.toString().trim(), name, mFirebaseAuth.getCurrentUser().getEmail(),members,NetAmt);
+                            Viewers.add(mFirebaseAuth.getCurrentUser().getEmail());
+                            Upload upload = new Upload(downloadUri.toString().trim(), name, Viewers,members,NetAmt);
                             mDatabaseRef.child(uploadId).setValue(upload);
                             Intent intent= new Intent(getApplicationContext(),Home.class);
                             intent.putExtra("id",uploadId);

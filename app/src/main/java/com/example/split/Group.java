@@ -81,14 +81,14 @@ public class Group extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.delGroup) {
-            mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
                     {
                         Upload upload= dataSnapshot1.getValue(Upload.class);
 
-                        if(upload.getName().equals(name) && upload.getCreatedBy().equals(mFirebaseAuth.getCurrentUser().getEmail().toString()))
+                        if(upload.getName().equals(name) && upload.getViewers().contains(mFirebaseAuth.getCurrentUser().getEmail().toString()))
                         {
                             mDatabaseRef1=FirebaseDatabase.getInstance().getReferenceFromUrl(dataSnapshot1.getRef().toString());
                             String key= dataSnapshot1.getKey();
