@@ -133,6 +133,7 @@ public class OverviewFragment extends Fragment {
                                     titleBox.setHint("\n"+inviteKey.substring(inviteKey.length()-6));
                                     titleBox.setGravity(Gravity.CENTER_HORIZONTAL);
                                     titleBox.setTextSize(30);
+                                    titleBox.setHintTextColor(Color.BLACK);
                                     titleBox.setTextColor(Color.BLACK);
                                     layout.addView(titleBox); // Notice this is an add method
 
@@ -171,6 +172,51 @@ public class OverviewFragment extends Fragment {
                 });
             }
         });
+
+
+
+        settleup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference settleUpRef= FirebaseDatabase.getInstance().getReference("groups");
+                settleUpRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                        {
+                            Upload upload=dataSnapshot1.getValue(Upload.class);
+                            Double amt[]=new Double[upload.getNetAmt().size()];
+                            String names[]=new String[upload.getMembers().size()];
+                            for(int i=0;i<upload.getNetAmt().size();i++)
+                            {
+                                amt[i]=upload.getNetAmt().get(i);
+                                names[i]=upload.getMembers().get(i);
+                            }
+
+                            SettleUp set = new SettleUp();
+                            set.settleup(amt,names);
+                            if(set.payy.toString().trim().isEmpty())
+                            {
+                                set.payy.append("No Suggested Payments");
+                            }
+
+                            AlertDialog.Builder settleupAlert= new AlertDialog.Builder(getContext());
+                            settleupAlert.setTitle("Suggested Payments");
+                            settleupAlert.setMessage(set.payy);
+                            settleupAlert.show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+        });
+
+
+
         return view;
     }
 
