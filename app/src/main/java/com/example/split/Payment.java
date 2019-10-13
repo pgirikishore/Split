@@ -241,7 +241,7 @@ public class Payment extends AppCompatActivity {
                                         }
                                     }
 
-                                    trans = new Transaction(Title1,PaidBy,PaidTo,date1,Double.valueOf(df2.format(Amt).toString()));
+                                    trans = new Transaction(Title1,PaidBy,PaidTo,date1,(Amt));
                                     mDR=FirebaseDatabase.getInstance().getReference("Transaction").child(((dataSnapshot1.getKey())));
                                     String key=mDR.push().getKey();
                                     mDR.child(key).setValue(trans).addOnSuccessListener(new OnSuccessListener<Void>() {

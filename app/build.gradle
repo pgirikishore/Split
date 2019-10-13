@@ -57,5 +57,11 @@ dependencies {
 
     //Pisscassio
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //Export PDF
+    implementation 'com.itextpdf:itextg:5.5.10'
+
+    // https://mvnrepository.com/artifact/com.itextpdf/layout
+    implementation group: 'com.itextpdf', name: 'layout', version: '7.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

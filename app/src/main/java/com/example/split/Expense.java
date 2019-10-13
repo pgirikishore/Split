@@ -184,7 +184,7 @@ public class Expense extends AppCompatActivity {
                                         }
                                     }
 
-                                    Transaction trans = new Transaction(Title1,PaidBy,"",date1,Double.parseDouble(df2.format(Amt)));
+                                    Transaction trans = new Transaction(Title1,PaidBy,"",date1,(Amt));
                                     mDR=FirebaseDatabase.getInstance().getReference("Transaction").child(((dataSnapshot1.getKey())));
                                     String key=mDR.push().getKey();
                                     mDR.child(key).setValue(trans).addOnSuccessListener(new OnSuccessListener<Void>() {

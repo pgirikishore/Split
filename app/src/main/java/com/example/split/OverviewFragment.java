@@ -184,26 +184,48 @@ public class OverviewFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
                         {
+
                             Upload upload=dataSnapshot1.getValue(Upload.class);
-                            Double amt[]=new Double[upload.getNetAmt().size()];
-                            String names[]=new String[upload.getMembers().size()];
-                            for(int i=0;i<upload.getNetAmt().size();i++)
+                            if(upload.getName().equals(Group.name) && upload.getViewers().contains(FirebaseAuth.getInstance().getCurrentUser().getEmail()))
                             {
-                                amt[i]=upload.getNetAmt().get(i);
-                                names[i]=upload.getMembers().get(i);
-                            }
+                                Double amt[]=new Double[upload.getNetAmt().size()];
+                                String names[]=new String[upload.getMembers().size()];
+                                for(int i=0;i<upload.getNetAmt().size();i++)
+                                {
 
-                            SettleUp set = new SettleUp();
-                            set.settleup(amt,names);
-                            if(set.payy.toString().trim().isEmpty())
-                            {
-                                set.payy.append("No Suggested Payments");
-                            }
+                                    amt[i]=Double.parseDouble(df2.format(upload.getNetAmt().get(i)));
+                                    Log.d("amt"+i+"=", ""+amt[i]);
+                                    names[i]=upload.getMembers().get(i);
+                                }
+                                double net=0;
+                                for(int i=0;i<amt.length;i++)
+                                {
+                                    net = net+amt[i];
+                                    net=Double.parseDouble(df2.format(net));
+                                    Log.d("net"+i+"=", ""+net);
+                                }
+                                Log.d("net= ", ""+net);
+                                amt[0]=amt[0]-net;
+                                amt[0]=Double.parseDouble(df2.format(amt[0]));
 
-                            AlertDialog.Builder settleupAlert= new AlertDialog.Builder(getContext());
-                            settleupAlert.setTitle("Suggested Payments");
-                            settleupAlert.setMessage(set.payy);
-                            settleupAlert.show();
+                                for(int i=0;i<amt.length;i++)
+                                {
+                                    Log.d("amt"+i+"=", ""+amt[i]);
+                                }
+
+                                SettleUp set = new SettleUp();
+                                set.settleup(amt,names);
+                                Log.d("payy", String.valueOf(set.payy));
+                                if(set.payy.toString().trim().isEmpty())
+                                {
+                                    set.payy.append("No Suggested Payments");
+                                }
+
+                                AlertDialog.Builder settleupAlert= new AlertDialog.Builder(getContext());
+                                settleupAlert.setTitle("Suggested Payments");
+                                settleupAlert.setMessage(set.payy);
+                                settleupAlert.show();
+                            }
                         }
                     }
 

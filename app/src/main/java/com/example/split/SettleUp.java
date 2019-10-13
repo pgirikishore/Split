@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+
 public class SettleUp {
 
     static int maxindex=0;
@@ -17,6 +19,7 @@ public class SettleUp {
     public String minName;
     public StringBuffer payy=new StringBuffer();
     DatabaseReference mDatabase;
+    private static DecimalFormat df2 = new DecimalFormat("#.##");
 
     public static int maximum(Double amt[])
     {
@@ -54,7 +57,7 @@ public class SettleUp {
         minName=names[min];
 
 
-        if(amt1[min]==0 && amt1[max]==0)
+        if(amt1[min]<=0 && amt1[max]==0)
         {
             return;
         }
@@ -64,15 +67,15 @@ public class SettleUp {
             if(amt1[max]>=(-1*amt1[min]))
             {
                 //System.out.println("Person "+min+" has to pay "+(-1*amt1[min])+" to person "+max);
-                this.payy.append("\n "+minName+" has to pay "+(-1*amt1[min])+" to "+maxName+"\n");
-                amt1[max]=amt1[max]+amt1[min];
-                amt1[min]=amt1[min]-amt1[min];
+                this.payy.append("\n"+minName+" has to pay "+df2.format(-1*amt1[min])+" to "+maxName+"\n");
+                amt1[max]=Double.parseDouble(df2.format(amt1[max]+amt1[min]));
+                amt1[min]=Double.parseDouble(df2.format(amt1[min]-amt1[min]));
             }
             else if(amt1[max]<(-1*amt1[min]))
             {
                 //System.out.println("Person "+min+" has to pay "+(amt1[max])+" to person "+max);
-                this.payy.append("\n"+minName+" has to pay "+(amt1[max])+" to "+maxName+"\n");
-                amt1[min]=amt1[min]+amt1[max];
+                this.payy.append("\n"+minName+" has to pay "+df2.format(amt1[max])+" to "+maxName+"\n");
+                amt1[min]=Double.parseDouble(df2.format(amt1[min]+amt1[max]));
                 amt1[max]=0.0;
             }
             settleup(amt1,names);

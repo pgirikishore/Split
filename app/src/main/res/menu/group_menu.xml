@@ -10,9 +10,9 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/changedp"
+        android:id="@+id/exportPDF"
         android:orderInCategory="100"
-        android:title="Change Picture"
+        android:title="Export PDF"
         app:showAsAction="never" />
 
 
